@@ -4,11 +4,31 @@ services:
   go:
     build: .
     restart: unless-stopped
-    ports: [ "8080:80" ]
+    ports: [ "8080:8080" ]
     volumes:
       - .:/go/src/app
     env_file:
       - .env
+
+    command: go run cmd/app/main.go -b 0.0.0.0
+
+    networks:
+      - local
+
+
+  go-load:
+    build: .
+    restart: unless-stopped
+    ports: [ "8081:8081" ]
+    volumes:
+      - .:/go/src/app
+    env_file:
+      - .env
+
+    command: go run cmd/load/main.go -b 0.0.0.0
+
+    networks:
+      - local
 
 
   prometheus:
@@ -29,3 +49,4 @@ services:
 
 networks:
   local:
+    driver: bridge
