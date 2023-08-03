@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  go:
+  go-app:
     build: .
     restart: unless-stopped
     ports: [ "8080:8080" ]
@@ -10,25 +10,18 @@ services:
     env_file:
       - .env
 
-    command: go run cmd/app/main.go -b 0.0.0.0
-
-    networks:
-      - local
 
 
   go-load:
     build: .
     restart: unless-stopped
-    ports: [ "8081:8081" ]
+    ports: [ "8082:8082" ]
     volumes:
       - .:/go/src/app
     env_file:
       - .env
 
-    command: go run cmd/load/main.go -b 0.0.0.0
-
-    networks:
-      - local
+    command: go run cmd/load/main.go
 
 
   prometheus:
@@ -37,16 +30,8 @@ services:
       - 9090:9090
     volumes:
       - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - local
 
   grafana:
     image: grafana/grafana:9.3.6
     ports:
       - 3000:3000
-    networks:
-      - local
-
-networks:
-  local:
-    driver: bridge

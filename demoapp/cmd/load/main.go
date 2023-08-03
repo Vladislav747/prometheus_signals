@@ -75,7 +75,7 @@ func main() {
 			for i := 0; i < requestsCount; i++ {
 				go func(e string) {
 					if _, err := http.DefaultClient.Get(
-						fmt.Sprintf("http://localhost:8080%s", e),
+						fmt.Sprintf("http://go-app:8080%s", e),
 					); err != nil {
 						fmt.Println(err)
 					}
